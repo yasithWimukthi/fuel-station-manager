@@ -17,6 +17,19 @@ export const addFuelStation = async (req,res) => {
     }
 }
 
-
-export const getFuelStationByOw
+/**
+ * @description - This function is used to get all the fuel stations by owner name
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+export const getFuelStationByOwner = async (req,res) => {
+    const owner = req.query.owner;
+    try {
+        const fuelStation = await FuelStation.find({owner:owner});
+        res.status(200).json(fuelStation);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
 
