@@ -17,3 +17,21 @@ export const addFuelQueue = async (req,res) => {
     }
 }
 
+/**
+ * @description - This function is used to update the fuel queue document when a customer leaves the fuel station or when the fuel queue is cancelled
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+export const updateFuelQueueStatusByCustomerName = async (req,res) => {
+    const customerName = req.query.customerName;
+    const status = req.query.status;
+    const departTime = req.query.departTime;
+    try {
+        const fuelQueue = await FuelQueue.findOneAndUpdate({customerName:customerName},{status:status,departTime:departTime},{new:true});
+        res.status(200).json(fuelQueue);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
