@@ -1,11 +1,22 @@
+import FuelStation from '../Models/FuelStation.js';
 
-
-const getVehicleCountByType = async (req, res) => {
+/**
+ * @description - This function is used to create a new fuel station document
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+export const addFuelStation = async (req,res) => {
+    const fuelStation = req.body;
+    const newFuelStation = new FuelStation(fuelStation);
     try {
-        const vehicleType = req.query.vehicleType;
-        const vehicleCount = await Vehicle.countDocuments({ vehicleType: vehicleType });
-        res.status(200).json({ vehicleCount: vehicleCount });
+        await newFuelStation.save();
+        res.status(201).json(newFuelStation);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(409).json({message:error.message});
     }
 }
+
+
+export const getFuelStationByOw
+
