@@ -35,3 +35,18 @@ export const updateFuelQueueStatusByCustomerName = async (req,res) => {
     }
 }
 
+/**
+ * @description - This function is used to get the fuel queue document by fuel station name
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+const getFuelQueueByStationName = async (req,res) => {
+    const fuelStation = req.query.stationName;
+    try {
+        const fuelQueue = await FuelQueue.find({fuelStation:fuelStation});
+        res.status(200).json(fuelQueue);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
