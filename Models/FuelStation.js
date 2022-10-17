@@ -8,6 +8,11 @@ const fuelStationSchema = new Schema({
         trim: true,
         required: true
     },
+    owner:{
+        type: String,
+        trim: true,
+        required: true
+    },
     location:{
         type:String,
         trim:true,
