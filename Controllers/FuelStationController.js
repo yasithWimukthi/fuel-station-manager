@@ -1,4 +1,5 @@
 import FuelStation from '../Models/FuelStation.js';
+import FuelStatus from '../Models/FuelStatus.js';
 
 /**
  * @description - This function is used to create a new fuel station document
@@ -32,4 +33,23 @@ export const getFuelStationByOwner = async (req,res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+/**
+ * @description - This function is used to add fuel status to the fuel station
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+export const addFuelStatusToFuelStation = async (req,res) => {
+    const fuelStatus = req.body;
+    const newFuelStatus = new FuelStatus(fuelStatus);
+    try {
+        await newFuelStatus.save();
+        res.status(201).json(newFuelStatus);
+    } catch (error) {
+        res.status(409).json({message:error.message});
+    }
+}
+
+
 
