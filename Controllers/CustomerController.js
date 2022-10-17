@@ -50,3 +50,20 @@ const getFuelQueueByStationName = async (req,res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+/**
+ * @description - This function is used to get the fuel queue document by fuel station name and vehicle type
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+const getFuelQueueByStationNameAndeVehicleType = async (req,res) => {
+    const fuelStation = req.query.stationName;
+    const vehicleType = req.query.vehicleType;
+    try {
+        const fuelQueue = await FuelQueue.find({fuelStation:fuelStation,vehicleType:vehicleType});
+        res.status(200).json(fuelQueue);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
