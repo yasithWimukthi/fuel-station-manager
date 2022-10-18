@@ -51,6 +51,12 @@ export const addFuelStatusToFuelStation = async (req,res) => {
     }
 }
 
+/**
+ * @description - This function is used to get the fuel station details
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 export const getAllFuelStations = async (req,res) => {
     try {
         const fuelStation = await FuelStation.find();
