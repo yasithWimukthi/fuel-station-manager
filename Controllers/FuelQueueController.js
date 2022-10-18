@@ -57,7 +57,7 @@ const getFuelQueueByStationName = async (req,res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const getFuelQueueByStationNameAndeVehicleType = async (req,res) => {
+const getFuelQueueByStationNameAndVehicleType = async (req,res) => {
     const fuelStation = req.query.stationName;
     const vehicleType = req.query.vehicleType;
     try {
