@@ -67,3 +67,16 @@ const getFuelQueueByStationNameAndVehicleType = async (req,res) => {
         res.status(404).json({message:error.message});
     }
 }
+
+
+const getFuelQueueByStationNameAndVehicleTypeAndDate = async (req,res) => {
+    const fuelStation = req.query.stationName;
+    const vehicleType = req.query.vehicleType;
+    const date = req.query.date;
+    try {
+        const fuelQueue = await FuelQueue.find({fuelStation:fuelStation,vehicleType:vehicleType,date:date});
+        res.status(200).json(fuelQueue);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
