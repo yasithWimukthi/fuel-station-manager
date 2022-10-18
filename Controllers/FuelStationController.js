@@ -51,5 +51,14 @@ export const addFuelStatusToFuelStation = async (req,res) => {
     }
 }
 
+export const getAllFuelStations = async (req,res) => {
+    try {
+        const fuelStation = await FuelStation.find();
+        res.status(200).json(fuelStation);
+    } catch (error) {
+        res.status(404).json({message:error.message});
+    }
+}
+
 
 
