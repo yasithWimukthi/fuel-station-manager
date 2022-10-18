@@ -68,7 +68,12 @@ const getFuelQueueByStationNameAndVehicleType = async (req,res) => {
     }
 }
 
-
+/**
+ * @description - This function is used to get the fuel queue document by fuel station name and vehicle type and date
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 const getFuelQueueByStationNameAndVehicleTypeAndDate = async (req,res) => {
     const fuelStation = req.query.stationName;
     const vehicleType = req.query.vehicleType;
