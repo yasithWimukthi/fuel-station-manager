@@ -1,5 +1,5 @@
 const FuelStation = require("../Models/FuelStation");
-const FuelStatus = require("../Models/FuelStatus");
+const FuelQueue = require("../Models/FuelQueue");
 
 /**
  * @description - This function is used to create a new fuel queue document when a customer arrives at the fuel station
@@ -8,7 +8,10 @@ const FuelStatus = require("../Models/FuelStatus");
  * @returns {Promise<void>}
  */
 exports.addFuelQueue = async (req, res) => {
-  const fuelQueue = req.body;
+  let fuelQueue = req.body;
+  fuelQueue.arrivalTime = new Date(fuelQueue.arrivalTime);
+  fuelQueue.departTime = new Date(fuelQueue.departTime);
+
   const newFuelQueue = new FuelQueue(fuelQueue);
   try {
     await newFuelQueue.save();
