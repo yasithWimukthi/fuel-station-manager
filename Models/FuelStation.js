@@ -1,22 +1,23 @@
-import mongoose from 'mongoose';
+const mongoose = require("mongoose");
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
-const fuelStationSchema = new Schema({
-    name:{
-        type: String,
-        trim: true,
-        required: true
+const fuelStationSchema = new Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: true,
     },
-    owner:{
-        type: String,
-        trim: true,
-        required: true
+    owner: {
+      type: String,
+      trim: true,
+      required: true,
     },
-    location:{
-        type:String,
-        trim:true,
-        required: true,
+    location: {
+      type: String,
+      trim: true,
+      required: true,
     },
     // queue:[
     //     {
@@ -30,7 +31,8 @@ const fuelStationSchema = new Schema({
     //         ref: "FuelStatus"
     //     }
     // ],
+  },
+  { timestamps: true }
+);
 
-},{timestamps:true});
-
-export default mongoose.model('FuelStation',fuelStationSchema);
+module.exports = mongoose.model("FuelStation", fuelStationSchema);
