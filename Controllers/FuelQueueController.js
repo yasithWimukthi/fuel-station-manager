@@ -66,9 +66,16 @@ exports.getFuelQueueByStationName = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.getFuelQueueByStationNameAndVehicleType = async (req, res) => {
-  const fuelStation = req.query.stationName;
-  const vehicleType = req.query.vehicleType;
   try {
+    const fuelStationId = await FuelStation.findOne({
+      name: fuelStation,
+    }).project({ _id: 1 });
+
+    console.log(fuelStationId);
+
+    const fuelStation = req.query.stationName;
+    const vehicleType = req.query.vehicleType;
+
     const fuelQueue = await FuelQueue.find({
       fuelStation: fuelStation,
       vehicleType: vehicleType,
