@@ -7,11 +7,11 @@ const fuelQueueSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "FuelStation",
   },
-  fuelTypeName: {
-    type: String,
-    trim: true,
-    required: true,
-  },
+  // fuelTypeName: {
+  //   type: String,
+  //   trim: true,
+  //   required: true,
+  // },
   customerName: {
     type: String,
     trim: true,
