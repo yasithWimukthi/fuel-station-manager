@@ -67,17 +67,17 @@ exports.getFuelQueueByStationName = async (req, res) => {
  */
 exports.getFuelQueueByStationNameAndVehicleType = async (req, res) => {
   try {
+    const fuelStation = req.query.stationName;
+    const vehicleType = req.query.vehicleType;
+
     const fuelStationId = await FuelStation.findOne({
       name: fuelStation,
     }).project({ _id: 1 });
 
     console.log(fuelStationId);
 
-    const fuelStation = req.query.stationName;
-    const vehicleType = req.query.vehicleType;
-
     const fuelQueue = await FuelQueue.find({
-      fuelStation: fuelStation,
+      fuelStation: mongoose.Types.ObjectId(fuelStationId),
       vehicleType: vehicleType,
     });
     res.status(200).json(fuelQueue);
