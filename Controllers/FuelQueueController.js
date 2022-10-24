@@ -91,18 +91,12 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
     const fuelStation = req.query.stationName;
     const vehicleType = req.query.vehicleType;
     const date = getDate24hrsBack();
-
     const fuelStationId = await FuelStation.findOne(
       {
         name: fuelStation,
       },
       { _id: 1 }
     );
-    console.log(fuelStation);
-    console.log(vehicleType);
-    console.log(fuelStationId);
-    console.log(date);
-
     const fuelQueue = await FuelQueue.find({
       fuelStation: mongoose.Types.ObjectId(fuelStationId),
       vehicleType: vehicleType,
