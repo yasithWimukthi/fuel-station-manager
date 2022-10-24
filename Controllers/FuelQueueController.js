@@ -88,7 +88,7 @@ exports.getFuelQueueByStationNameAndVehicleType = async (req, res) => {
 exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
   const fuelStation = req.query.stationName;
   const vehicleType = req.query.vehicleType;
-  const date = req.query.date;
+  const date = new Date();
   try {
     const fuelQueue = await FuelQueue.find({
       fuelStation: fuelStation,
