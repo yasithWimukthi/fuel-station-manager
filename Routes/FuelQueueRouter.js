@@ -16,8 +16,6 @@ router.route("/getFuelQueueByStationName").get(getFuelQueueByStationName);
 router
   .route("/getFuelQueueByStationNameAndVehicleType")
   .get(getFuelQueueByStationNameAndVehicleType);
-router
-  .route("/getFuelQueueByStationNameAndVehicleTypeAndDate")
-  .get(getFuelQueueByStationNameAndVehicleTypeAndDate);
+router.route("/getQueue").get(getFuelQueueByStationNameAndVehicleTypeAndDate);
 
 module.exports = router;
