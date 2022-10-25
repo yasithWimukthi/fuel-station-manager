@@ -1,6 +1,7 @@
 const FuelStation = require("../Models/FuelStation");
 const FuelQueue = require("../Models/FuelQueue");
 const mongoose = require("mongoose");
+const FuelStatus = require("../Models/FuelStatus");
 
 /**
  * @description - This function is used to create a new fuel queue document when a customer arrives at the fuel station
@@ -108,8 +109,9 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
       },
     });
     res.status(200).json({
-      vehicleType,
       fuelStationName: fuelStation,
+      fuelType,
+      vehicleType,
       customers: fuelQueue,
     });
   } catch (error) {
@@ -123,4 +125,16 @@ function getDate24hrsBack() {
   var substractMlSeconds = 60 * 60 * 1000 * 24;
   var newDateObj = new Date(numberOfMlSeconds - substractMlSeconds);
   return newDateObj;
+}
+
+async function getFuelStatus(fuelStation, fuelType) {
+  try {
+    const status = await FuelStatus.find(
+      { fuelStation, fuelType },
+      { status: 1 }
+    );
+    return status;
+  } catch (error) {
+    return error.error;
+  }
 }
