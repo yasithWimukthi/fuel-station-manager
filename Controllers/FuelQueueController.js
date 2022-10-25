@@ -110,12 +110,22 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
     });
     const fuelStatus = await getFuelStatus(fuelStationId, fuelType);
 
+    const count = await FuelQueue.countDocuments({
+      fuelStation: mongoose.Types.ObjectId(fuelStationId),
+      vehicleType,
+      fuelTypeName: fuelType,
+      arrivalTime: {
+        $gte: date,
+      },
+      status: "in",
+    });
+
     res.status(200).json({
       fuelStationName: fuelStation,
       fuelType,
       vehicleType,
       fuelStatus,
-      count: 2,
+      count,
       customers: fuelQueue,
     });
   } catch (error) {
