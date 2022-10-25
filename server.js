@@ -38,10 +38,12 @@ app.use((error, req, res, next) => {
 // Route files
 const fuelStations = require("./routes/FuelStationRouter");
 const fuelQueues = require("./routes/FuelQueueRouter");
+const fuelStatus = require("./routes/FuelStatusRouter");
 
 // Mount routers
 app.use("/api/v1/fuelStations", fuelStations);
 app.use("/api/v1/fuelQueues", fuelQueues);
+app.use("/api/v1/fuelStatus", fuelStatus);
 
 mongoose
   .connect(process.env.CONNECTION_URL)

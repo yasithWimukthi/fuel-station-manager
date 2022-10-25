@@ -1,5 +1,7 @@
 const FuelStation = require("../Models/FuelStation");
 const FuelQueue = require("../Models/FuelQueue");
+const mongoose = require("mongoose");
+const FuelStatus = require("../Models/FuelStatus");
 
 /**
  * @description - This function is used to create a new fuel queue document when a customer arrives at the fuel station
@@ -86,17 +88,69 @@ exports.getFuelQueueByStationNameAndVehicleType = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
-  const fuelStation = req.query.stationName;
-  const vehicleType = req.query.vehicleType;
-  const date = req.query.date;
   try {
+    const fuelStation = req.query.stationName;
+    const vehicleType = req.query.vehicleType;
+    const fuelType = req.query.fuelType;
+
+    const date = getDate24hrsBack();
+    const fuelStationId = await FuelStation.findOne(
+      {
+        name: fuelStation,
+      },
+      { _id: 1 }
+    );
     const fuelQueue = await FuelQueue.find({
-      fuelStation: fuelStation,
-      vehicleType: vehicleType,
-      date: date,
+      fuelStation: mongoose.Types.ObjectId(fuelStationId),
+      vehicleType,
+      fuelTypeName: fuelType,
+      arrivalTime: {
+        $gte: date,
+      },
     });
-    res.status(200).json(fuelQueue);
+    const fuelStatus = await getFuelStatus(fuelStationId, fuelType);
+
+    const count = await FuelQueue.countDocuments({
+      fuelStation: mongoose.Types.ObjectId(fuelStationId),
+      vehicleType,
+      fuelTypeName: fuelType,
+      arrivalTime: {
+        $gte: date,
+      },
+      status: "in",
+    });
+
+    res.status(200).json({
+      fuelStationName: fuelStation,
+      fuelType,
+      vehicleType,
+      fuelStatus,
+      count,
+      customers: fuelQueue,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
+
+//call this function to get date before 24hrs from now
+function getDate24hrsBack() {
+  var currentDateObj = new Date();
+  var numberOfMlSeconds = currentDateObj.getTime();
+  var substractMlSeconds = 60 * 60 * 1000 * 24;
+  var newDateObj = new Date(numberOfMlSeconds - substractMlSeconds);
+  return newDateObj;
+}
+
+//pass fuelStationId and the type to this function to get the fuel status
+async function getFuelStatus(fuelStation, fuelType) {
+  try {
+    const fuelStatusObj = await FuelStatus.findOne({
+      fuelStation: fuelStation,
+      fuelTypeName: fuelType,
+    });
+    return fuelStatusObj.status;
+  } catch (error) {
+    return error.error;
+  }
+}
