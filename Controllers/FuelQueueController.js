@@ -108,10 +108,14 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
         $gte: date,
       },
     });
+    const fuelStatus = await getFuelStatus(fuelStationId, fuelType);
+
     res.status(200).json({
       fuelStationName: fuelStation,
       fuelType,
       vehicleType,
+      fuelStatus,
+      count: 2,
       customers: fuelQueue,
     });
   } catch (error) {
@@ -119,6 +123,7 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
   }
 };
 
+//call this function to get date before 24hrs from now
 function getDate24hrsBack() {
   var currentDateObj = new Date();
   var numberOfMlSeconds = currentDateObj.getTime();
@@ -127,13 +132,14 @@ function getDate24hrsBack() {
   return newDateObj;
 }
 
+//pass fuelStationId and the type to this function to get the fuel status
 async function getFuelStatus(fuelStation, fuelType) {
   try {
-    const status = await FuelStatus.find(
-      { fuelStation, fuelType },
-      { status: 1 }
-    );
-    return status;
+    const fuelStatusObj = await FuelStatus.findOne({
+      fuelStation: fuelStation,
+      fuelTypeName: fuelType,
+    });
+    return fuelStatusObj.status;
   } catch (error) {
     return error.error;
   }

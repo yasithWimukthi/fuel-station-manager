@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 exports.addFueStatus = async (req, res) => {
   let fuelStatus = req.body;
 
-  const newFuelStatus = new FuelQueue(fuelStatus);
+  const newFuelStatus = new FuelStatus(fuelStatus);
   try {
     await newFuelStatus.save();
     res.status(201).json(newFuelStatus);
