@@ -11,13 +11,42 @@ const FuelStatus = require("../Models/FuelStatus");
  */
 exports.addFuelQueue = async (req, res) => {
   let fuelQueue = req.body;
-  fuelQueue.arrivalTime = new Date(fuelQueue.arrivalTime);
-  fuelQueue.departTime = new Date(fuelQueue.departTime);
+  fuelQueue.arrivalTime = new Date();
 
   const newFuelQueue = new FuelQueue(fuelQueue);
   try {
     await newFuelQueue.save();
     res.status(201).json(newFuelQueue);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+
+exports.exitBeforePump = async (req, res) => {
+  let name = req.body.name;
+  departTime = new Date();
+
+  try {
+    updatedQueue = await FuelQueue.findOneAndUpdate(
+      { customerName: name },
+      { departTime, status: "notPumped" }
+    );
+    res.status(201).json(updatedQueue);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+
+exports.exitAfterPump = async (req, res) => {
+  let name = req.body.name;
+  departTime = new Date();
+
+  try {
+    updatedQueue = await FuelQueue.findOneAndUpdate(
+      { customerName: name },
+      { departTime, status: "pumped" }
+    );
+    res.status(201).json(updatedQueue);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -121,6 +150,7 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
     });
 
     res.status(200).json({
+      fuelStationId: fuelStationId._id,
       fuelStationName: fuelStation,
       fuelType,
       vehicleType,

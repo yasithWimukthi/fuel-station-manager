@@ -6,9 +6,14 @@ const {
   getFuelQueueByStationName,
   getFuelQueueByStationNameAndVehicleType,
   getFuelQueueByStationNameAndVehicleTypeAndDate,
+  exitAfterPump,
+  exitBeforePump,
 } = require("../controllers/FuelQueueController");
 
 router.route("/").post(addFuelQueue);
+router.route("/exitAfterPump").post(exitAfterPump);
+router.route("/exitBeforePump").post(exitBeforePump);
+
 router
   .route("/updateFuelQueueStatusByCustomerName")
   .put(updateFuelQueueStatusByCustomerName);
