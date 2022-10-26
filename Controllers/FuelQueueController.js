@@ -23,12 +23,12 @@ exports.addFuelQueue = async (req, res) => {
 };
 
 exports.exitBeforePump = async (req, res) => {
-  let _id = req.body;
+  let name = req.body.name;
   departTime = new Date();
 
   try {
-    updatedQueue = await FuelQueue.findByIdAndUpdate(
-      { _id },
+    updatedQueue = await FuelQueue.findOneAndUpdate(
+      { customerName: name },
       { departTime, status: "notPumped" }
     );
     res.status(201).json(updatedQueue);
@@ -38,12 +38,12 @@ exports.exitBeforePump = async (req, res) => {
 };
 
 exports.exitAfterPump = async (req, res) => {
-  let _id = req.body;
+  let name = req.body.name;
   departTime = new Date();
 
   try {
-    updatedQueue = await FuelQueue.findByIdAndUpdate(
-      { _id },
+    updatedQueue = await FuelQueue.findOneAndUpdate(
+      { customerName: name },
       { departTime, status: "pumped" }
     );
     res.status(201).json(updatedQueue);
