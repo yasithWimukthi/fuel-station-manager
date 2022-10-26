@@ -129,14 +129,50 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
       },
       { _id: 1 }
     );
-    const fuelQueue = await FuelQueue.find({
-      fuelStation: mongoose.Types.ObjectId(fuelStationId),
-      vehicleType,
-      fuelTypeName: fuelType,
-      arrivalTime: {
-        $gte: date,
+    // const fuelQueue = await FuelQueue.find({
+    //   fuelStation: mongoose.Types.ObjectId(fuelStationId),
+    //   vehicleType,
+    //   fuelTypeName: fuelType,
+    //   arrivalTime: {
+    //     $gte: date,
+    //   },
+    // });
+    const fuelQueue = await FuelQueue.aggregate([
+      {
+        $match: {
+          fuelStation: mongoose.Types.ObjectId(fuelStationId),
+          vehicleType,
+          fuelTypeName: fuelType,
+          arrivalTime: {
+            $gte: date,
+          },
+        },
       },
-    });
+      {
+        $project: {
+          arrivalTime: {
+            $dateToString: {
+              format: "%H:%M:%S",
+              date: "$arrivalTime",
+              timezone: "+05:30",
+            },
+          },
+          departTime: {
+            $dateToString: {
+              format: "%H:%M:%S",
+              date: "$departTime",
+              timezone: "+05:30",
+            },
+          },
+          fuelStation: 1,
+          vehicleType: 1,
+          fuelTypeName: 1,
+          customerName: 1,
+          status: 1,
+        },
+      },
+    ]);
+
     const fuelStatus = await getFuelStatus(fuelStationId, fuelType);
 
     const count = await FuelQueue.countDocuments({
@@ -149,7 +185,7 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
       status: "in",
     });
 
-    res.status(200).json({
+    await res.status(200).json({
       fuelStationId: fuelStationId._id,
       fuelStationName: fuelStation,
       fuelType,

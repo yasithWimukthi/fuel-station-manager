@@ -41,10 +41,15 @@ exports.getFuelStationByOwner = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.addFuelStatusToFuelStation = async (req, res) => {
-  const fuelStatus = req.body;
-  const newFuelStatus = new FuelStatus(fuelStatus);
+  const _id = req.params._id;
+  const body = req.body;
+  const stationObj = body;
   try {
-    await newFuelStatus.save();
+    console.log(stationObj);
+    const newFuelStatus = await FuelStation.findByIdAndUpdate(
+      { _id },
+      stationObj
+    );
     res.status(201).json(newFuelStatus);
   } catch (error) {
     res.status(409).json({ message: error.message });
