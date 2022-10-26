@@ -11,8 +11,7 @@ const FuelStatus = require("../Models/FuelStatus");
  */
 exports.addFuelQueue = async (req, res) => {
   let fuelQueue = req.body;
-  fuelQueue.arrivalTime = new Date(fuelQueue.arrivalTime);
-  fuelQueue.departTime = new Date(fuelQueue.departTime);
+  fuelQueue.arrivalTime = new Date();
 
   const newFuelQueue = new FuelQueue(fuelQueue);
   try {
