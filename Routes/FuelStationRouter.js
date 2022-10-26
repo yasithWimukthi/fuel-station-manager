@@ -9,6 +9,6 @@ const {
 
 router.route("/").get(getAllFuelStations).post(addFuelStation);
 router.route("/owner").get(getFuelStationByOwner);
-router.route("/addStatus").post(addFuelStatusToFuelStation);
+router.route("/addStatus/:_id").post(addFuelStatusToFuelStation);
 
 module.exports = router;
