@@ -22,6 +22,21 @@ exports.addFuelQueue = async (req, res) => {
   }
 };
 
+exports.exitBeforePump = async (req, res) => {
+  let _id = req.body;
+  departTime = new Date();
+
+  try {
+    updatedQueue = await FuelQueue.findByIdAndUpdate(
+      { _id },
+      { departTime, status: "notPumped" }
+    );
+    res.status(201).json(updatedQueue);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+
 /**
  * @description - This function is used to update the fuel queue document when a customer leaves the fuel station or when the fuel queue is cancelled
  * @param req
