@@ -121,6 +121,7 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
     });
 
     res.status(200).json({
+      fuelStationId: fuelStationId._id,
       fuelStationName: fuelStation,
       fuelType,
       vehicleType,
