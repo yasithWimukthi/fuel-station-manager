@@ -52,18 +52,6 @@ const fuelStationSchema = new Schema(
       type: Date,
       trim: true,
     },
-    // queue:[
-    //     {
-    //         type:Schema.Types.ObjectId,
-    //         ref:'FuelQueue'
-    //     }
-    // ],
-    // FuelType:[
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "FuelStatus"
-    //     }
-    // ],
   },
   { timestamps: true }
 );

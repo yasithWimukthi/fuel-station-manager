@@ -129,14 +129,6 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
       },
       { _id: 1 }
     );
-    // const fuelQueue = await FuelQueue.find({
-    //   fuelStation: mongoose.Types.ObjectId(fuelStationId),
-    //   vehicleType,
-    //   fuelTypeName: fuelType,
-    //   arrivalTime: {
-    //     $gte: date,
-    //   },
-    // });
     const fuelQueue = await FuelQueue.aggregate([
       {
         $match: {
