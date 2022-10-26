@@ -41,9 +41,45 @@ exports.getFuelStationByOwner = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.addFuelStatusToFuelStation = async (req, res) => {
-  const _id = req.params._id;
+  const _id = req.params.id;
   const body = req.body;
   const stationObj = body;
+
+  if (stationObj.petrolArrivalTime) {
+    stationObj.petrolArrivalTime = convertToJsDate(
+      stationObj.petrolArrivalTime
+    );
+  }
+  if (stationObj.petrolFinishedTime) {
+    stationObj.petrolFinishedTime = convertToJsDate(
+      stationObj.petrolFinishedTime
+    );
+  }
+
+  if (stationObj.dieselArrivalTime) {
+    stationObj.dieselArrivalTime = convertToJsDate(
+      stationObj.dieselArrivalTime
+    );
+  }
+
+  if (stationObj.dieselFinishedTime) {
+    stationObj.dieselFinishedTime = convertToJsDate(
+      stationObj.dieselFinishedTime
+    );
+  }
+
+  if (stationObj.gasolineArrivalTime) {
+    stationObj.gasolineArrivalTime = convertToJsDate(
+      stationObj.gasolineArrivalTime
+    );
+  }
+
+  if (stationObj.gasolineFinishedTime) {
+    stationObj.gasolineFinishedTime = convertToJsDate(
+      stationObj.gasolineFinishedTime
+    );
+  }
+
   try {
     console.log(stationObj);
     const newFuelStatus = await FuelStation.findByIdAndUpdate(
@@ -54,7 +90,6 @@ exports.addFuelStatusToFuelStation = async (req, res) => {
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
-  // res.status(200).json({ hey: "dad" });
 };
 
 /**
@@ -71,3 +106,9 @@ exports.getAllFuelStations = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+function convertToJsDate(javaDate) {
+  const dateArr = javaDate.split(" ");
+  const convertedDate = "20" + dateArr[0] + "T" + dateArr[1];
+  return convertedDate;
+}
