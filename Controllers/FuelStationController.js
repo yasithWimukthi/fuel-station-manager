@@ -45,40 +45,36 @@ exports.addFuelStatusToFuelStation = async (req, res) => {
   const body = req.body;
   const stationObj = body;
 
-  if (stationObj.petrolArrivalTime) {
-    stationObj.petrolArrivalTime = convertToJsDate(
-      stationObj.petrolArrivalTime
-    );
-  }
-  if (stationObj.petrolFinishedTime) {
-    stationObj.petrolFinishedTime = convertToJsDate(
-      stationObj.petrolFinishedTime
-    );
-  }
-
-  if (stationObj.dieselArrivalTime) {
-    stationObj.dieselArrivalTime = convertToJsDate(
-      stationObj.dieselArrivalTime
-    );
-  }
-
-  if (stationObj.dieselFinishedTime) {
-    stationObj.dieselFinishedTime = convertToJsDate(
-      stationObj.dieselFinishedTime
-    );
-  }
-
-  if (stationObj.gasolineArrivalTime) {
-    stationObj.gasolineArrivalTime = convertToJsDate(
-      stationObj.gasolineArrivalTime
-    );
-  }
-
-  if (stationObj.gasolineFinishedTime) {
-    stationObj.gasolineFinishedTime = convertToJsDate(
-      stationObj.gasolineFinishedTime
-    );
-  }
+  // if (stationObj.petrolArrivalTime) {
+  //   stationObj.petrolArrivalTime = convertToJsDate(
+  //     stationObj.petrolArrivalTime
+  //   );
+  // }
+  // if (stationObj.petrolFinishedTime) {
+  //   stationObj.petrolFinishedTime = convertToJsDate(
+  //     stationObj.petrolFinishedTime
+  //   );
+  // }
+  // if (stationObj.dieselArrivalTime) {
+  //   stationObj.dieselArrivalTime = convertToJsDate(
+  //     stationObj.dieselArrivalTime
+  //   );
+  // }
+  // if (stationObj.dieselFinishedTime) {
+  //   stationObj.dieselFinishedTime = convertToJsDate(
+  //     stationObj.dieselFinishedTime
+  //   );
+  // }
+  // if (stationObj.gasolineArrivalTime) {
+  //   stationObj.gasolineArrivalTime = convertToJsDate(
+  //     stationObj.gasolineArrivalTime
+  //   );
+  // }
+  // if (stationObj.gasolineFinishedTime) {
+  //   stationObj.gasolineFinishedTime = convertToJsDate(
+  //     stationObj.gasolineFinishedTime
+  //   );
+  // }
 
   try {
     console.log(stationObj);
@@ -86,8 +82,10 @@ exports.addFuelStatusToFuelStation = async (req, res) => {
       { _id },
       stationObj
     );
+    console.log("success");
     res.status(201).json(newFuelStatus);
   } catch (error) {
+    console.log(error);
     res.status(409).json({ message: error.message });
   }
 };
@@ -112,3 +110,20 @@ function convertToJsDate(javaDate) {
   const convertedDate = "20" + dateArr[0] + "T" + dateArr[1];
   return convertedDate;
 }
+
+/**
+ * @description - Get a single fuel station
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.getFuelStation = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const fuelStation = await FuelStation.findById(id);
+    fuelStation.dieselArrivalTime = fuelStation.dieselArrivalTime.toISOString();
+    res.status(200).json(fuelStation);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
