@@ -121,7 +121,7 @@ exports.getFuelStation = async (req, res) => {
   try {
     const id = req.params.id;
     const fuelStation = await FuelStation.findById(id);
-    fuelStation.dieselArrivalTime = fuelStation.dieselArrivalTime.toISOString();
+    // fuelStation.dieselArrivalTime = fuelStation.dieselArrivalTime.toISOString();
     res.status(200).json(fuelStation);
   } catch (error) {
     res.status(404).json({ message: error.message });
