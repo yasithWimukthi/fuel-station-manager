@@ -183,6 +183,7 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
       fuelStationId,
       fuelType
     );
+    const fuelStatus2 = await getFuelStatus2(fuelStationId, fuelType);
 
     const count = await FuelQueue.countDocuments({
       fuelStation: mongoose.Types.ObjectId(fuelStationId),
@@ -199,7 +200,7 @@ exports.getFuelQueueByStationNameAndVehicleTypeAndDate = async (req, res) => {
       fuelStationName: fuelStation,
       fuelType,
       vehicleType,
-      fuelStatus,
+      fuelStatus: fuelStatus2,
       fuelArrivalTime,
       fuelDepartureTime,
       count,
@@ -288,6 +289,27 @@ async function getDepartureFuelTimes(fuelStation, fuelType) {
         .toISOString()
         .slice(0, 16)
         .replace(/T/g, " ");
+    }
+  } catch (error) {
+    return error.error;
+  }
+}
+
+//pass fuelStationId and the type to this function to get the fuel finishing times
+async function getFuelStatus2(fuelStation, fuelType) {
+  try {
+    const fuelStationObj = await FuelStation.findOne({
+      _id: fuelStation,
+    });
+
+    if (fuelType == "Petrol") {
+      return fuelStationObj.petrolStatus;
+    }
+    if (fuelType == "Diesel") {
+      return fuelStationObj.dieselStatus;
+    }
+    if (fuelType == "Gasoline") {
+      return fuelStationObj.gasolineStatus;
     }
   } catch (error) {
     return error.error;
