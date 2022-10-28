@@ -13,11 +13,23 @@ exports.addFuelQueue = async (req, res) => {
   let fuelQueue = req.body;
   fuelQueue.arrivalTime = new Date();
 
+  let existing = await FuelQueue.findOne({
+    customerName: req.body.customerName,
+  });
+  console.log(existing);
+
+  if (existing) {
+    console.log("error");
+    return res.status(200).json({ _id: "0" });
+  }
   const newFuelQueue = new FuelQueue(fuelQueue);
+
   try {
     await newFuelQueue.save();
     res.status(201).json(newFuelQueue);
+    console.log("succuss");
   } catch (error) {
+    console.log("exception");
     res.status(409).json({ message: error.message });
   }
 };
